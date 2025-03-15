@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SIT737 Week 02</title>
+    <meta name="description" content="basic template for SIT 737 workshop 02">
+    <meta name="author" content="SitePoint">
+    <meta property="og:title" content="SIT 737 workshop 02">
+    <meta property="og:type" content="website">
+    <meta property="og:description" content="basic template for SIT 737 workshop 02">
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Custom Style Sheet-->
+    <link rel="stylesheet" href="css/style.css">
+
+    <script>
+        async function calculate(operation) {
+            const n1 = document.getElementById("n1").value;
+            const n2 = document.getElementById("n2").value;
+
+            if (!n1 || !n2) {
+                document.getElementById("result").innerText = "Please enter both numbers.";
+                return;
+            }
+
+            try {
+                const response = await fetch(`/${operation}?n1=${n1}&n2=${n2}`);
+                console.log("ASDFGHJ", response)
+                const data = await response.json();
+                console.log("qweer", data)
+                if (data.statuscode === 200) {
+                    document.getElementById("result").innerText = "Result is : " + data.data;
+                } else {
+                    document.getElementById("result").innerText = "Error is : " + data.msg;
+                }
+            } catch (error) {
+                document.getElementById("result").innerText = "An error occurred!";
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <nav>
+        <div class="nav-wrapper navbar-size">
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a class="nav-link" target="_blank" href="">SIT737</a></li>
+            </ul>
+        </div>
+    </nav>
+    <main class="main-body">
+        <div class="container">
+            <div class="row">
+                <div class="col s12">
+                    <h2 id="heading" class="center-align">SIT737 - Cloud Native Application Development
+                        Information</h2>
+                </div>
+            </div>
+        </div>
+        </div>
+        <form class="col s12" id="calculator" onsubmit="return false;">
+            <div class="row">
+                <div class="input-field col s6">
+                    <label for="number">Number 1: </label>
+                    <input type="text" id="n1" name="n1"></input>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                    <label for="number">Number 2: </label>
+                    <input type="text" id="n2" name="n2"></input>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6 center-align">
+                    <button type="submit" class="waves-effect waves-light btn" value="Addition"
+                        onclick="calculate('add')">Addition</button>
+                    <button type="submit" class="waves-effect waves-light btn" value="Subtraction"
+                        onclick="calculate('sub')">Subtraction</button>
+                    <button type="submit" class="waves-effect waves-light btn" value="Multiplication"
+                        onclick="calculate('mul')">Multiplication</button>
+                    <button type="submit" class="waves-effect waves-light btn" value="Division"
+                        onclick="calculate('div')">Division</button>
+                </div>
+            </div>
+        </form>
+        <!-- Showing the result -->
+        <div class="col s12" style="margin-left: 20vw; margin-bottom: 10vh; font-size: 20px;">
+            <p id="result"></p>
+        </div>
+        <div class="footer">
+            <div class="text">SIT737 - Cloud Native Application Development Information - 2.1 P | s223681886 - Kaushalya
+                Rajapaksha</div>
+        </div>
+    </main>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,23 @@
+{
+  "name": "sit737-2025-prac2p",
+  "version": "1.0.0",
+  "description": "sit737-2025-prac2p",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KaushiRajapakshe/SIT737.git"
+  },
+  "author": "KaushiRajapakshe",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KaushiRajapakshe/SIT737/issues"
+  },
+  "homepage": "https://github.com/KaushiRajapakshe/SIT737#readme",
+  "dependencies": {
+    "express": "^4.21.2",
+    "winston": "^3.17.0"
+  }
+}
