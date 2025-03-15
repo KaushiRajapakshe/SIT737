@@ -29,9 +29,7 @@
 
             try {
                 const response = await fetch(`/${operation}?n1=${n1}&n2=${n2}`);
-                console.log("ASDFGHJ", response)
                 const data = await response.json();
-                console.log("qweer", data)
                 if (data.statuscode === 200) {
                     document.getElementById("result").innerText = "Result is : " + data.data;
                 } else {
