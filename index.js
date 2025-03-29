@@ -57,8 +57,8 @@ app.get('/', (req, res) => {
 // addition get function
 app.get("/add", (req,res)=>{
     try{
-    const n1= parseFloat(req.query.n1);
-    const n2=parseFloat(req.query.n2);
+    const n1= req.query.n1;
+    const n2= req.query.n2;
     if(isNaN(n1)) {
         logger.error("n1 is incorrectly defined");
         throw new Error("n1 incorrectly defined");
@@ -68,12 +68,8 @@ app.get("/add", (req,res)=>{
         throw new Error("n2 incorrectly defined");
     }
     
-    if (n1 === NaN || n2 === NaN) {
-        console.log()
-        throw new Error("Parsing Error");
-    }
     logger.info('Parameters '+n1+' and '+n2+' received for addition');
-    const result = add(n1,n2);
+    const result = add(parseFloat(n1),parseFloat(n2));
 
     res.json({statuscode:200, data: result, message: "Addition Successful" }); 
     } catch(error) { 
@@ -95,12 +91,9 @@ app.get("/sub", (req,res)=>{
         logger.error("n2 is incorrectly defined");
         throw new Error("n2 incorrectly defined");
     }
-    if (n1 === NaN || n2 === NaN) {
-        console.log()
-        throw new Error("Parsing Error");
-    }
+
     logger.info('Parameters '+n1+' and '+n2+' received for subtraction');
-    const result = sub(n1,n2);
+    const result = sub(parseFloat(n1),parseFloat(n2));
     res.json({statuscode:200, data: result, message: "Subtraction Successful"}); 
     } catch(error) { 
         console.error(error)
@@ -121,13 +114,9 @@ app.get("/mul", (req,res)=>{
         logger.error("n2 is incorrectly defined");
         throw new Error("n2 incorrectly defined");
     }
-    
-    if (n1 === NaN || n2 === NaN) {
-        console.log()
-        throw new Error("Parsing Error");
-    }
+
     logger.info('Parameters '+n1+' and '+n2+' received for multiplication');
-    const result = mul(n1,n2);
+    const result = mul(parseFloat(n1),parseFloat(n2));
     res.json({statuscode:200, data: result, message: "Multiplication Successful"}); 
     } catch(error) { 
         console.error(error)
@@ -149,12 +138,8 @@ app.get("/div", (req,res)=>{
         throw new Error("n2 incorrectly defined");
     }
     
-    if (n1 === NaN || n2 === NaN) {
-        console.log()
-        throw new Error("Parsing Error");
-    }
     logger.info('Parameters '+n1+' and '+n2+' received for division');
-    const result = div(n1,n2);
+    const result = div(parseFloat(n1),parseFloat(n2));
     res.json({statuscode:200, data: result, message: "Division Successful"}); 
     } catch(error) { 
         console.error(error)
