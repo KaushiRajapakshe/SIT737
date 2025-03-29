@@ -48,6 +48,29 @@ const mul=(n1,n2) => {
 const div=(n1,n2) => {
     return n1/n2;
 }
+
+// exponentiation
+const exp=(n1,n2) => {
+    return Math.pow(n1,n2);
+}
+
+// squareroot
+const sqr=(n1,n2) => {
+    const val = "Num 1 : " + Math.sqrt(n1) + " , Num 2 : " + Math.sqrt(n2);
+    return val;
+    
+}
+
+// modulo
+const mod=(n1,n2) => {
+    return n1%n2;
+}
+
+// absolute
+const abs=(n1,n2) => {
+    const val = "Num 1 : " +  Math.abs(n1) + " , Num 2 : " + Math.abs(n2);
+    return val;
+}
  
 app.get('/', (req, res) => {
     res.render(index.html);
@@ -146,6 +169,99 @@ app.get("/div", (req,res)=>{
         res.json({statuscode:500, msg: error.toString() })
       }
 });
+
+// exponentiation get fuction
+app.get("/exp", (req,res)=>{
+    try{
+    const n1= parseFloat(req.query.n1);
+    const n2=parseFloat(req.query.n2);
+    if(isNaN(n1)) {
+        logger.error("n1 is incorrectly defined");
+        throw new Error("n1 incorrectly defined");
+    }
+    if(isNaN(n2)) {
+        logger.error("n2 is incorrectly defined");
+        throw new Error("n2 incorrectly defined");
+    }
+    
+    logger.info('Parameters '+n1+' and '+n2+' received for exponentiation');
+    const result = exp(parseFloat(n1),parseFloat(n2));
+    res.json({statuscode:200, data: result, message: "Exponentiation Successful"}); 
+    } catch(error) { 
+        console.error(error)
+        res.json({statuscode:500, msg: error.toString() })
+      }
+});
+
+// squareroot get fuction
+app.get("/sqr", (req,res)=>{
+    try{
+    const n1= parseFloat(req.query.n1);
+    const n2=parseFloat(req.query.n2);
+    if(isNaN(n1)) {
+        logger.error("n1 is incorrectly defined");
+        throw new Error("n1 incorrectly defined");
+    }
+    if(isNaN(n2)) {
+        logger.error("n2 is incorrectly defined");
+        throw new Error("n2 incorrectly defined");
+    }
+    
+    logger.info('Parameters '+n1+' and '+n2+' received for squareroot');
+    const result = sqr(parseFloat(n1),parseFloat(n2));
+    res.json({statuscode:200, data: result, message: "Squareroot Successful"}); 
+    } catch(error) { 
+        console.error(error)
+        res.json({statuscode:500, msg: error.toString() })
+      }
+});
+
+// modulo get fuction
+app.get("/mod", (req,res)=>{
+    try{
+    const n1= parseFloat(req.query.n1);
+    const n2=parseFloat(req.query.n2);
+    if(isNaN(n1)) {
+        logger.error("n1 is incorrectly defined");
+        throw new Error("n1 incorrectly defined");
+    }
+    if(isNaN(n2)) {
+        logger.error("n2 is incorrectly defined");
+        throw new Error("n2 incorrectly defined");
+    }
+    
+    logger.info('Parameters '+n1+' and '+n2+' received for modulo');
+    const result = mod(parseFloat(n1),parseFloat(n2));
+    res.json({statuscode:200, data: result, message: "Modulo Successful"}); 
+    } catch(error) { 
+        console.error(error)
+        res.json({statuscode:500, msg: error.toString() })
+      }
+});
+
+// absolute get fuction
+app.get("/abs", (req,res)=>{
+    try{
+    const n1= parseFloat(req.query.n1);
+    const n2=parseFloat(req.query.n2);
+    if(isNaN(n1)) {
+        logger.error("n1 is incorrectly defined");
+        throw new Error("n1 incorrectly defined");
+    }
+    if(isNaN(n2)) {
+        logger.error("n2 is incorrectly defined");
+        throw new Error("n2 incorrectly defined");
+    }
+    
+    logger.info('Parameters '+n1+' and '+n2+' received for absolute');
+    const result = abs(parseFloat(n1),parseFloat(n2));
+    res.json({statuscode:200, data: result, message: "Absolute Successful"}); 
+    } catch(error) { 
+        console.error(error)
+        res.json({statuscode:500, msg: error.toString() })
+      }
+});
+
 
 const port=3041;
 app.listen(port,()=> {
