@@ -3,6 +3,7 @@ version: '3'
 services:
   app:
     build: .
+    image: australia-southeast2-docker.pkg.dev/sit737-25t1-dona-3ac918c/calculator/cal:1
     ports:
       - "3041:3041"
     depends_on:
