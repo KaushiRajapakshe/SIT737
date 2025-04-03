@@ -1,7 +1,7 @@
 {
-  "name": "sit737-2025-prac2p",
+  "name": "sit737-2025-prac5p",
   "version": "1.0.0",
-  "description": "sit737-2025-prac2p",
+  "description": "sit737-2025-prac5p",
   "main": "index.js",
   "scripts": {
     "test": "test"
@@ -18,6 +18,8 @@
   "homepage": "https://github.com/KaushiRajapakshe/SIT737#readme",
   "dependencies": {
     "express": "^4.21.2",
+    "mongodb": "^6.15.0",
+    "mongoose": "^8.13.1",
     "winston": "^3.17.0"
   }
 }

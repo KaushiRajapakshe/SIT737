@@ -1,0 +1,37 @@
+version: '3'
+# Calculator service
+services:
+  app:
+    build: .
+    ports:
+      - "3041:3041"
+    depends_on:
+      mongo:
+        condition: service_healthy
+    environment:
+      - PORT=3041
+      - MONGO_URI=mongodb://mongo:27017/calculator
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3041"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+# Mongo service
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    restart: always
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.runCommand('ping').ok"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  mongo-data:
+

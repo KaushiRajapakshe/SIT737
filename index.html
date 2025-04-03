@@ -4,12 +4,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SIT737 Week 04</title>
-    <meta name="description" content="basic template for SIT 737 workshop 04">
+    <title>SIT737 Week 05</title>
+    <meta name="description" content="basic template for SIT 737 workshop 05">
     <meta name="author" content="SitePoint">
-    <meta property="og:title" content="SIT 737 workshop 04">
+    <meta property="og:title" content="SIT 737 workshop 05">
     <meta property="og:type" content="website">
-    <meta property="og:description" content="basic template for SIT 737 workshop 04">
+    <meta property="og:description" content="basic template for SIT 737 workshop 05">
 
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
@@ -38,7 +38,33 @@
             } catch (error) {
                 document.getElementById("result").innerText = "An error occurred!";
             }
+            getCalculations();
         }
+
+        async function getCalculations() {
+            try {
+                const response = await fetch("http://localhost:3041/calculation");
+                const data = await response.json();
+                const tableBody = document.getElementById("calculationTableBody");
+                tableBody.innerHTML = "";
+
+                data.data.forEach(calc => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${calc.n1}</td>
+                        <td>${calc.n2}</td>
+                        <td>${calc.operation}</td>
+                        <td>${calc.result}</td>
+                        <td>${new Date(calc.date).toLocaleString()}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error("Error getting calculations:", error);
+            }
+        }
+
+        window.onload = getCalculations;
     </script>
 </head>
 
@@ -85,7 +111,7 @@
                         onclick="calculate('div')">Division</button>
                     <button type="submit" class="waves-effect waves-light btn" value="Exponentiation"
                         onclick="calculate('exp')">Exponentiation</button>
-                        <br/><br/>
+                    <br /><br />
                     <button type="submit" class="waves-effect waves-light btn" value="Squareroot"
                         onclick="calculate('sqr')">Square Root</button>
                     <button type="submit" class="waves-effect waves-light btn" value="Modulo"
@@ -99,8 +125,27 @@
         <div class="col s12" style="margin-left: 20vw; margin-bottom: 10vh; font-size: 20px;">
             <p id="result"></p>
         </div>
+
+        <!-- Showing the calculations histroy -->
+        <div class="col s12" style="margin-left: 20vw; margin-bottom: 10vh; font-size: 20px;">
+            <p> Calculation History </p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Number 1</th>
+                        <th>Number 2</th>
+                        <th>Operation</th>
+                        <th>Result</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody id="calculationTableBody">
+
+                </tbody>
+            </table>
+        </div>
         <div class="footer">
-            <div class="text">SIT737 - Cloud Native Application Development Information - 4.2 C | s223681886 - Kaushalya
+            <div class="text">SIT737 - Cloud Native Application Development Information - 5.1 P | s223681886 - Kaushalya
                 Rajapaksha</div>
         </div>
     </main>

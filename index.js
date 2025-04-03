@@ -4,6 +4,8 @@ const express = require("express");
 const app = express();
 const fs = require('fs');
 const winston = require('winston');
+const mongoose = require('mongoose');
+
 const logger = winston.createLogger({
     level: 'info',
     format: winston.format.json(),
@@ -27,6 +29,21 @@ if (process.env.NODE_ENV !== 'production') {
         format: winston.format.simple(),
     }));
 }
+
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('MongoDB Connected'))
+    .catch(err => console.log(err));
+
+
+const CalculatorSchema = new mongoose.Schema({
+    n1: Number,
+    n2: Number,
+    operation: String,
+    result: Number,
+    date: { type: Date, default: Date.now }
+});
+
+const Calculator = mongoose.model('Calculator', CalculatorSchema);
 
 app.use(express.static(__dirname + '/'))
 // addition
@@ -78,7 +95,7 @@ app.get('/', (req, res) => {
 
 
 // addition get function
-app.get("/add", (req, res) => {
+app.get("/add", async (req, res) => {
     try {
         const n1 = req.query.n1;
         const n2 = req.query.n2;
@@ -94,6 +111,9 @@ app.get("/add", (req, res) => {
         logger.info('Parameters ' + n1 + ' and ' + n2 + ' received for addition');
         const result = add(parseFloat(n1), parseFloat(n2));
 
+        const calculator = new Calculator({ n1, n2, operation: 'addition', result });
+        await calculator.save();
+
         res.json({ statuscode: 200, data: result, message: "Addition Successful" });
     } catch (error) {
         console.error(error)
@@ -102,7 +122,7 @@ app.get("/add", (req, res) => {
 });
 
 // subtraction get function
-app.get("/sub", (req, res) => {
+app.get("/sub", async (req, res) => {
     try {
         const n1 = req.query.n1;
         const n2 = req.query.n2;
@@ -117,6 +137,10 @@ app.get("/sub", (req, res) => {
 
         logger.info('Parameters ' + n1 + ' and ' + n2 + ' received for subtraction');
         const result = sub(parseFloat(n1), parseFloat(n2));
+
+        const calculator = new Calculator({ n1, n2, operation: 'subtraction', result });
+        await calculator.save();
+
         res.json({ statuscode: 200, data: result, message: "Subtraction Successful" });
     } catch (error) {
         console.error(error)
@@ -125,7 +149,7 @@ app.get("/sub", (req, res) => {
 });
 
 // multiplication get function
-app.get("/mul", (req, res) => {
+app.get("/mul", async (req, res) => {
     try {
         const n1 = req.query.n1;
         const n2 = req.query.n2;
@@ -140,6 +164,10 @@ app.get("/mul", (req, res) => {
 
         logger.info('Parameters ' + n1 + ' and ' + n2 + ' received for multiplication');
         const result = mul(parseFloat(n1), parseFloat(n2));
+
+        const calculator = new Calculator({ n1, n2, operation: 'multiplication', result });
+        await calculator.save();
+
         res.json({ statuscode: 200, data: result, message: "Multiplication Successful" });
     } catch (error) {
         console.error(error)
@@ -148,7 +176,7 @@ app.get("/mul", (req, res) => {
 });
 
 // division get function
-app.get("/div", (req, res) => {
+app.get("/div", async (req, res) => {
     try {
         const n1 = req.query.n1;
         const n2 = req.query.n2;
@@ -163,6 +191,10 @@ app.get("/div", (req, res) => {
 
         logger.info('Parameters ' + n1 + ' and ' + n2 + ' received for division');
         const result = div(parseFloat(n1), parseFloat(n2));
+
+        const calculator = new Calculator({ n1, n2, operation: 'division', result });
+        await calculator.save();
+
         res.json({ statuscode: 200, data: result, message: "Division Successful" });
     } catch (error) {
         console.error(error)
@@ -171,7 +203,7 @@ app.get("/div", (req, res) => {
 });
 
 // exponentiation get fuction
-app.get("/exp", (req, res) => {
+app.get("/exp", async (req, res) => {
     try {
         const n1 = req.query.n1;
         const n2 = req.query.n2;
@@ -186,6 +218,10 @@ app.get("/exp", (req, res) => {
 
         logger.info('Parameters ' + n1 + ' and ' + n2 + ' received for exponentiation');
         const result = exp(parseFloat(n1), parseFloat(n2));
+
+        const calculator = new Calculator({ n1, n2, operation: 'exponentiation', result });
+        await calculator.save();
+
         res.json({ statuscode: 200, data: result, message: "Exponentiation Successful" });
     } catch (error) {
         console.error(error)
@@ -194,7 +230,7 @@ app.get("/exp", (req, res) => {
 });
 
 // squareroot get fuction
-app.get("/sqr", (req, res) => {
+app.get("/sqr", async (req, res) => {
     try {
         const n1 = req.query.n1;
         const n2 = req.query.n2;
@@ -209,6 +245,10 @@ app.get("/sqr", (req, res) => {
 
         logger.info('Parameters ' + n1 + ' and ' + n2 + ' received for squareroot');
         const result = sqr(parseFloat(n1), parseFloat(n2));
+
+        const calculator = new Calculator({ n1, n2, operation: 'squareroot', result });
+        await calculator.save();
+
         res.json({ statuscode: 200, data: result, message: "Squareroot Successful" });
     } catch (error) {
         console.error(error)
@@ -217,7 +257,7 @@ app.get("/sqr", (req, res) => {
 });
 
 // modulo get fuction
-app.get("/mod", (req, res) => {
+app.get("/mod", async (req, res) => {
     try {
         const n1 = req.query.n1;
         const n2 = req.query.n2;
@@ -232,6 +272,11 @@ app.get("/mod", (req, res) => {
 
         logger.info('Parameters ' + n1 + ' and ' + n2 + ' received for modulo');
         const result = mod(parseFloat(n1), parseFloat(n2));
+
+
+        const calculator = new Calculator({ n1, n2, operation: 'modulo', result });
+        await calculator.save();
+
         res.json({ statuscode: 200, data: result, message: "Modulo Successful" });
     } catch (error) {
         console.error(error)
@@ -240,7 +285,7 @@ app.get("/mod", (req, res) => {
 });
 
 // absolute get fuction
-app.get("/abs", (req, res) => {
+app.get("/abs", async (req, res) => {
     try {
         const n1 = req.query.n1;
         const n2 = req.query.n2;
@@ -255,6 +300,10 @@ app.get("/abs", (req, res) => {
 
         logger.info('Parameters ' + n1 + ' and ' + n2 + ' received for absolute');
         const result = abs(parseFloat(n1), parseFloat(n2));
+
+        const calculator = new Calculator({ n1, n2, operation: 'absolute', result });
+        await calculator.save();
+
         res.json({ statuscode: 200, data: result, message: "Absolute Successful" });
     } catch (error) {
         console.error(error)
@@ -262,8 +311,19 @@ app.get("/abs", (req, res) => {
     }
 });
 
+// calculation function
+app.get("/calculation", async (req, res) => {
+    try {
+        logger.info('Fetch all calculations');
+        const result = await Calculator.find().sort({ date: -1 }); // Sort by latest first
+        res.json({ statuscode: 200, data: result, message: "Get all calculation Successful" });
+    } catch (error) {
+        console.error(error)
+        res.json({ statuscode: 500, msg: error.toString() })
+    }
+});
 
-const port = 3041;
+const port = process.env.PORT || 3041;
 app.listen(port, () => {
     console.log("hello i'm listening to port " + port);
 })
