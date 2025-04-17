@@ -6,7 +6,7 @@ metadata:
     run: mypod
 spec:
   containers:
-  - image: kaushi11/calculator:latest
+  - image: kaushi11/calculator:1
     name: nodewebapp
     ports:
     - containerPort: 3041 
