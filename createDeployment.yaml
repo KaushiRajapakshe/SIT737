@@ -18,6 +18,31 @@ spec:
     spec:
       containers:
       - name: mynode
-        image: australia-southeast2-docker.pkg.dev/sit737-25t1-dona-3ac918c/calculator/cal:1
-        ports:
-        - containerPort: 3041
+        image: kaushi11/calculator:latest
+        env:
+        - name: PORT
+          value: "4000"
+        - name: MONGO_URI
+          value: mongodb://mongo:27017/calculator
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      containers:
+        - name: mongo
+          image: mongo:6.0
+          ports:
+            - containerPort: 27017

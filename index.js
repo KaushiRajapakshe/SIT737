@@ -323,7 +323,7 @@ app.get("/calculation", async (req, res) => {
     }
 });
 
-const port = process.env.PORT || 3041;
+const port = process.env.PORT;
 app.listen(port, () => {
     console.log("hello i'm listening to port " + port);
 })

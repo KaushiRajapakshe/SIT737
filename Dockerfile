@@ -7,6 +7,6 @@ RUN npm install --prefer-offline
 
 COPY . .
 
-EXPOSE 3041
+# EXPOSE 3041
 
 CMD ["node", "index.js"]

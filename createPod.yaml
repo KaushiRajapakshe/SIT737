@@ -6,7 +6,7 @@ metadata:
     run: mypod
 spec:
   containers:
-  - image: australia-southeast2-docker.pkg.dev/sit737-25t1-dona-3ac918c/calculator/cal:1 
+  - image: kaushi11/calculator:latest
     name: nodewebapp
     ports:
     - containerPort: 3041 
