@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: text-toolkit-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: text-toolkit
+  template:
+    metadata:
+      labels:
+        app: text-toolkit
+    spec:
+      containers:
+        - name: text-toolkit
+          image: australia-southeast2-docker.pkg.dev/sit737-25t1-dona-3ac918c/text-toolkit:latest
+          ports:
+            - containerPort: 3041

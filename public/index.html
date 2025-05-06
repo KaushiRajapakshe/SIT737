@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Text Toolkit</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <nav>
+      <button onclick="showSection('reverse')">Text Reverse</button>
+      <button onclick="showSection('diff')">Text Diff</button>
+      <button onclick="showSection('count')">Word/Char Count</button>
+      <button onclick="showSection('convert')">Case Converter</button>
+    </nav>
+
+    <section id="reverse" class="tool">
+      <h2>Text Reverse</h2>
+      <textarea id="reverseInput"></textarea>
+      <button onclick="processReverse()">Reverse</button>
+      <pre id="reverseResult"></pre>
+    </section>
+
+    <section id="diff" class="tool">
+      <h2>Text Diff</h2>
+      <textarea id="diff1"></textarea>
+      <textarea id="diff2"></textarea>
+      <button onclick="processDiff()">Compare</button>
+      <pre id="diffResult"></pre>
+    </section>
+
+    <section id="count" class="tool">
+      <h2>Word & Character Count</h2>
+      <textarea id="countInput"></textarea>
+      <button onclick="processCount()">Count</button>
+      <pre id="countResult"></pre>
+    </section>
+
+    <section id="convert" class="tool">
+      <h2>Case Converter</h2>
+      <textarea id="convertInput"></textarea>
+      <select id="caseType">
+        <option value="upper">UPPERCASE</option>
+        <option value="lower">lowercase</option>
+        <option value="title">Title Case</option>
+      </select>
+      <button onclick="processConvert()">Convert</button>
+      <pre id="convertResult"></pre>
+    </section>
+
+    <input type="file" onchange="uploadFile(this)" />
+    <script src="script.js"></script>
+  </body>
+</html>

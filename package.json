@@ -1,9 +1,11 @@
 {
-  "name": "sit737-2025-prac2p",
+  "name": "text-toolkit",
   "version": "1.0.0",
-  "description": "sit737-2025-prac2p",
+  "description": "Text Toolkit Web App",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
     "test": "test"
   },
   "repository": {
@@ -17,7 +19,10 @@
   },
   "homepage": "https://github.com/KaushiRajapakshe/SIT737#readme",
   "dependencies": {
-    "express": "^4.21.2",
-    "winston": "^3.17.0"
+    "express": "^5.1.0",
+    "express-fileupload": "^1.5.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
   }
 }

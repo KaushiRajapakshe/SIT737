@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: text-toolkit-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: text-toolkit
+  ports:
+    - port: 80
+      targetPort: 3041
