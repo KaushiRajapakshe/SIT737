@@ -2,28 +2,26 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mydeployment
-  labels:
-    app: myapp
-    tier: frontend
 spec:
-  # modify replicas according to your case
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      tier: frontend
+      app: myapp 
   template:
     metadata:
       labels:
-        tier: frontend
+        app: myapp 
     spec:
       containers:
-      - name: mynode
-        image: kaushi11/calculator:1
-        env:
-        - name: PORT
-          value: "4000"
-        - name: MONGO_URI
-          value: mongodb://mongo:27017/calculator
+        - name: mynode
+          image: kaushi11/calculator:1
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PORT
+              value: "4000"
+            - name: MONGO_URI
+              # value: "mongodb://mongo:27017/calculator"
+              value: "mongodb://admin:password@mongo:27017/calculator?authSource=admin"
 
 ---
 
@@ -46,3 +44,18 @@ spec:
           image: mongo:6.0
           ports:
             - containerPort: 27017
+          # args: ["--dbpath", "/data/db"]
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: "admin"
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              value: "password"
+          volumeMounts:
+            - mountPath: /data/db
+              name: mongo-volume
+          # ports:
+          #   - containerPort: 27017
+      volumes:
+        - name: mongo-volume
+          persistentVolumeClaim:
+            claimName: mongo-pvc

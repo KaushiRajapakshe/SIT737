@@ -43,7 +43,7 @@
 
         async function getCalculations() {
             try {
-                const response = await fetch("http://localhost:3041/calculation");
+                const response = await fetch("http://localhost:32005/calculation");
                 const data = await response.json();
                 const tableBody = document.getElementById("calculationTableBody");
                 tableBody.innerHTML = "";

@@ -11,4 +11,4 @@ spec:
     ports:
     - containerPort: 3041 
   dnsPolicy: ClusterFirst
-  rescartrolicy: Always
+  restartPolicy: Always

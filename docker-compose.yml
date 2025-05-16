@@ -12,6 +12,7 @@ services:
     environment:
       - PORT=3041
       - MONGO_URI=mongodb://mongo:27017/calculator
+      # - MONGO_URI=mongodb://admin:password@mongo:27017/calculator?authSource=admin
     restart: always
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3041"]
@@ -24,8 +25,11 @@ services:
     image: mongo
     ports:
       - "27017:27017"
-    volumes:
-      - mongo-data:/data/db
+    # environment:
+    #   MONGO_INITDB_ROOT_USERNAME: admin
+    #   MONGO_INITDB_ROOT_PASSWORD: password
+    # volumes:
+    #   - mongo-data:/data/db
     restart: always
     healthcheck:
       test: ["CMD", "mongosh", "--eval", "db.runCommand('ping').ok"]
