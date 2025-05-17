@@ -4,12 +4,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SIT737 Week 05</title>
-    <meta name="description" content="basic template for SIT 737 workshop 05">
+    <title>SIT737 Week 10</title>
+    <meta name="description" content="basic template for SIT 737 workshop 10">
     <meta name="author" content="SitePoint">
-    <meta property="og:title" content="SIT 737 workshop 05">
+    <meta property="og:title" content="SIT 737 workshop 10">
     <meta property="og:type" content="website">
-    <meta property="og:description" content="basic template for SIT 737 workshop 05">
+    <meta property="og:description" content="basic template for SIT 737 workshop 10">
 
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
@@ -43,7 +43,7 @@
 
         async function getCalculations() {
             try {
-                const response = await fetch("http://localhost:32005/calculation");
+                const response = await fetch("http://localhost:4000/calculation");
                 const data = await response.json();
                 const tableBody = document.getElementById("calculationTableBody");
                 tableBody.innerHTML = "";
@@ -145,7 +145,7 @@
             </table>
         </div>
         <div class="footer">
-            <div class="text">SIT737 - Cloud Native Application Development Information - 5.1 P | s223681886 - Kaushalya
+            <div class="text">SIT737 - Cloud Native Application Development Information - 10.1 P | s223681886 - Kaushalya
                 Rajapaksha</div>
         </div>
     </main>

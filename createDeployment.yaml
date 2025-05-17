@@ -20,8 +20,8 @@ spec:
             - name: PORT
               value: "4000"
             - name: MONGO_URI
-              # value: "mongodb://mongo:27017/calculator"
-              value: "mongodb://admin:password@mongo:27017/calculator?authSource=admin"
+              value: "mongodb://mongo:27017/calculator"
+              # value: "mongodb://admin:password@mongo:27017/calculator?authSource=admin"
 
 ---
 
@@ -45,17 +45,17 @@ spec:
           ports:
             - containerPort: 27017
           # args: ["--dbpath", "/data/db"]
-          env:
-            - name: MONGO_INITDB_ROOT_USERNAME
-              value: "admin"
-            - name: MONGO_INITDB_ROOT_PASSWORD
-              value: "password"
-          volumeMounts:
-            - mountPath: /data/db
-              name: mongo-volume
+          # env:
+          #   - name: MONGO_INITDB_ROOT_USERNAME
+          #     value: "admin"
+          #   - name: MONGO_INITDB_ROOT_PASSWORD
+          #     value: "password"
+          # volumeMounts:
+          #   - mountPath: /data/db
+          #     name: mongo-volume
           # ports:
           #   - containerPort: 27017
-      volumes:
-        - name: mongo-volume
-          persistentVolumeClaim:
-            claimName: mongo-pvc
+      # volumes:
+      #   - name: mongo-volume
+      #     persistentVolumeClaim:
+      #       claimName: mongo-pvc
