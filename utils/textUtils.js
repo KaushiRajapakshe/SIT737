@@ -4,19 +4,17 @@ exports.diffText = (a, b) => {
   const linesA = a.split("\n");
   const linesB = b.split("\n");
   let diffs = [];
-
   for (let i = 0; i < Math.max(linesA.length, linesB.length); i++) {
     if (linesA[i] !== linesB[i]) {
       diffs.push(`Line ${i + 1}: "${linesA[i] || ""}" vs "${linesB[i] || ""}"`);
     }
   }
-
   return diffs.join("\n");
 };
 
 exports.countText = (text) => ({
   characterCount: text.length,
-  wordCount: text.trim().split(/\s+/).length,
+  wordCount: text.trim().split(/\s+/).filter(Boolean).length,
 });
 
 exports.convertCase = (text, type) => {

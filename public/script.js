@@ -1,65 +1,164 @@
-function showSection(id) {
-  document
-    .querySelectorAll(".tool")
-    .forEach((sec) => (sec.style.display = "none"));
-  document.getElementById(id).style.display = "block";
+function $(id) {
+  return document.getElementById(id);
 }
 
-async function postData(endpoint, data) {
-  const res = await fetch(`/api/${endpoint}`, {
+document.addEventListener("DOMContentLoaded", function () {
+  // Only on home.html
+  if ($("logout-btn")) {
+    let navButtons = [
+      { btn: "nav-reverse", sec: "reverse" },
+      { btn: "nav-diff", sec: "diff" },
+      { btn: "nav-count", sec: "count" },
+      { btn: "nav-convert", sec: "convert" },
+      { btn: "nav-history", sec: "history" },
+    ];
+    navButtons.forEach((n) => {
+      $(n.btn).onclick = () => {
+        document
+          .querySelectorAll(".tool")
+          .forEach((s) => (s.style.display = "none"));
+        $(n.sec).style.display = "block";
+        if (n.sec === "history") fetchHistory();
+      };
+    });
+    $("logout-btn").onclick = async () => {
+      await fetch("/auth/logout", { method: "POST" });
+      window.location.href = "/";
+    };
+  }
+
+  // Login/Register
+  const loginView = $("login-view"),
+    registerView = $("register-view");
+  if ($("show-register"))
+    $("show-register").onclick = () => {
+      loginView.style.display = "none";
+      registerView.style.display = "block";
+    };
+  if ($("show-login"))
+    $("show-login").onclick = () => {
+      registerView.style.display = "none";
+      loginView.style.display = "block";
+    };
+
+  // Login Form
+  document
+    .getElementById("login-form")
+    .addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById("login-username").value;
+      const password = document.getElementById("login-password").value;
+
+      try {
+        const res = await fetch("/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          // Login successful — redirect to home.html
+          window.location.href = "home.html";
+        } else {
+          document.getElementById("login-error").textContent =
+            data.message || "Login failed";
+        }
+      } catch (err) {
+        document.getElementById("login-error").textContent =
+          "Error connecting to server";
+      }
+    });
+
+  // Register Form
+  if ($("register-form"))
+    $("register-form").onsubmit = async (e) => {
+      e.preventDefault();
+      let u = $("register-username").value.trim(),
+        p = $("register-password").value.trim();
+      if (u.length < 3 || p.length < 6)
+        return ($("register-error").innerText =
+          "Username or password too short.");
+      let r = await fetch("/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: u, password: p }),
+      });
+      let d = await r.json();
+      if (d.success) window.location.href = "/";
+      else $("register-error").innerText = d.error || "Registration failed";
+    };
+});
+
+// Toolkit functions
+window.processReverse = async function () {
+  let text = $("reverseInput").value;
+  let res = await fetch("/api/reverse", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
+    body: JSON.stringify({ text }),
   });
-  return res.json();
-}
+  let data = await res.json();
+  $("reverseResult").textContent = data.result;
+};
 
-function processReverse() {
-  const text = document.getElementById("reverseInput").value;
-  postData("reverse", { text }).then((res) => {
-    document.getElementById("reverseResult").textContent = res.result;
+window.processDiff = async function () {
+  let text1 = $("diff1").value,
+    text2 = $("diff2").value;
+  let res = await fetch("/api/diff", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text1, text2 }),
   });
-}
+  let data = await res.json();
+  $("diffResult").textContent = data.result;
+};
 
-function processDiff() {
-  const text1 = document.getElementById("diff1").value;
-  const text2 = document.getElementById("diff2").value;
-  postData("diff", { text1, text2 }).then((res) => {
-    document.getElementById("diffResult").textContent = res.result;
+window.processCount = async function () {
+  let text = $("countInput").value;
+  let res = await fetch("/api/count", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text }),
   });
-}
+  let data = await res.json();
+  $("countResult").textContent =
+    "Characters: " + data.characterCount + "\nWords: " + data.wordCount;
+};
 
-function processCount() {
-  const text = document.getElementById("countInput").value;
-  postData("count", { text }).then((res) => {
-    document.getElementById(
-      "countResult"
-    ).textContent = `Words: ${res.wordCount}, Characters: ${res.characterCount}`;
+window.processConvert = async function () {
+  let text = $("convertInput").value,
+    type = $("caseType").value;
+  let res = await fetch("/api/convert", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text, type }),
   });
-}
+  let data = await res.json();
+  $("convertResult").textContent = data.result;
+};
 
-function processConvert() {
-  const text = document.getElementById("convertInput").value;
-  const type = document.getElementById("caseType").value;
-  postData("convert", { text, type }).then((res) => {
-    document.getElementById("convertResult").textContent = res.result;
+window.uploadFile = async function (input) {
+  if (!input.files || !input.files[0]) return;
+  let form = new FormData();
+  form.append("file", input.files[0]);
+  let res = await fetch("/api/upload", { method: "POST", body: form });
+  let data = await res.json();
+  alert("File content loaded:\n" + (data.content || ""));
+};
+
+window.fetchHistory = async function () {
+  let res = await fetch("/api/history");
+  let h = await res.json();
+  let html = "<ul>";
+  h.forEach((item) => {
+    html += `<li>[${new Date(item.createdAt).toLocaleString()}] <b>${item.action
+      }</b>: <br/>Input: ${JSON.stringify(
+        item.input
+      )}<br/>Result: ${JSON.stringify(item.result)}</li>`;
   });
-}
-
-async function uploadFile(input) {
-  const file = input.files[0];
-  if (!file) return;
-
-  const formData = new FormData();
-  formData.append("file", file);
-
-  const res = await fetch("/api/upload", { method: "POST", body: formData });
-  const data = await res.json();
-
-  // Auto-fill based on current visible tool
-  const visibleTool = [...document.querySelectorAll(".tool")].find(
-    (el) => el.style.display === "block"
-  );
-  const textarea = visibleTool.querySelector("textarea");
-  if (textarea) textarea.value = data.content;
-}
+  html += "</ul>";
+  $("historyResult").innerHTML = html;
+};

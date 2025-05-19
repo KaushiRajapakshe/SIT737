@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Text Toolkit Home</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      .file-info {
+        font-size: 0.9em;
+        color: #555;
+        margin: 4px 0 10px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>SIT737 Text Toolkit</h1>
+      <nav class="nav">
+        <button id="nav-reverse">Text Reverse</button>
+        <button id="nav-diff">Text Diff</button>
+        <button id="nav-count">Word/Char Count</button>
+        <button id="nav-convert">Case Converter</button>
+        <button id="nav-history">History</button>
+        <button id="logout-btn">Logout</button>
+      </nav>
+    </header>
+
+    <main>
+      <!-- Reverse Section -->
+      <section id="reverse" class="tool">
+        <h2>Text Reverse</h2>
+        <textarea id="reverseInput" placeholder="Enter text to reverse..."></textarea>
+        <input type="file" onchange="loadFileToTextarea(this, 'reverseInput')" />
+        <p class="file-info">Supported file types: .txt, .md, .csv</p>
+        <button onclick="processReverse()">Reverse</button>
+        <button onclick="clearTextarea('reverseInput')">Clear</button>
+        <pre id="reverseResult"></pre>
+      </section>
+
+      <!-- Diff Section -->
+      <section id="diff" class="tool" style="display: none">
+        <h2>Text Diff</h2>
+        <textarea id="diff1" placeholder="Original text..."></textarea>
+        <input type="file" onchange="loadFileToTextarea(this, 'diff1')" />
+        <p class="file-info">Supported file types: .txt, .md, .csv</p>
+        <button onclick="clearTextarea('diff1')">Clear</button>
+
+        <textarea id="diff2" placeholder="Modified text..."></textarea>
+        <input type="file" onchange="loadFileToTextarea(this, 'diff2')" />
+        <p class="file-info">Supported file types: .txt, .md, .csv</p>
+        <button onclick="clearTextarea('diff2')">Clear</button>
+
+        <button onclick="processDiff()">Compare</button>
+        <pre id="diffResult"></pre>
+      </section>
+
+      <!-- Count Section -->
+      <section id="count" class="tool" style="display: none">
+        <h2>Word & Character Count</h2>
+        <textarea id="countInput" placeholder="Enter text to count..."></textarea>
+        <input type="file" onchange="loadFileToTextarea(this, 'countInput')" />
+        <p class="file-info">Supported file types: .txt, .md, .csv</p>
+        <button onclick="processCount()">Count</button>
+        <button onclick="clearTextarea('countInput')">Clear</button>
+        <pre id="countResult"></pre>
+      </section>
+
+      <!-- Convert Section -->
+      <section id="convert" class="tool" style="display: none">
+        <h2>Case Converter</h2>
+        <textarea id="convertInput" placeholder="Enter text to convert..."></textarea>
+        <input type="file" onchange="loadFileToTextarea(this, 'convertInput')" />
+        <p class="file-info">Supported file types: .txt, .md, .csv</p>
+        <select id="caseType">
+          <option value="upper">UPPERCASE</option>
+          <option value="lower">lowercase</option>
+          <option value="title">Title Case</option>
+        </select>
+        <button onclick="processConvert()">Convert</button>
+        <button onclick="clearTextarea('convertInput')">Clear</button>
+        <pre id="convertResult"></pre>
+      </section>
+
+      <!-- History Section -->
+      <section id="history" class="tool" style="display: none">
+        <h2>Last 20 Actions (History)</h2>
+        <div id="historyResult"></div>
+      </section>
+    </main>
+
+    <footer>
+      <div>
+        SIT737 - Cloud Native Application Development | Text Toolkit | Kaushalya
+        Rajapaksha
+      </div>
+    </footer>
+
+    <script>
+      function loadFileToTextarea(input, textareaId) {
+        const file = input.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          document.getElementById(textareaId).value = e.target.result;
+        };
+        reader.readAsText(file);
+      }
+
+      function clearTextarea(id) {
+        document.getElementById(id).value = "";
+      }
+    </script>
+    <script src="script.js"></script>
+  </body>
+</html>

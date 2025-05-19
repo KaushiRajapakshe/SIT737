@@ -1,0 +1,53 @@
+name: Deploy to Google Cloud Run
+
+on:
+  push:
+    branches:
+      - sit737-2025-prac8hd 
+
+jobs:
+  deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/text-toolkit:1
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{ secrets.GCP_PROJECT }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+      
+      - name: Get GKE credentials
+        run: |
+          gcloud components install gke-gcloud-auth-plugin --quiet
+          gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER_NAME }} --region ${{ secrets.GCP_REGION }}
+        
+      - name: Deploy Kubernetes manifests
+        run: |
+          kubectl apply -f k8s/createStorageClass.yml
+          kubectl apply -f k8s/createPersistentVolumeClaim.yml
+          kubectl apply -f k8s/deployment.yml
+          kubectl apply -f k8s/service.yml
+
+      - name: Verify Kubernetes resources
+        run: |
+          kubectl get pods
+          kubectl get services
+          kubectl get deployment

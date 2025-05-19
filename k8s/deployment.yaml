@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: text-toolkit-deployment
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: text-toolkit
@@ -14,6 +14,52 @@ spec:
     spec:
       containers:
         - name: text-toolkit
-          image: australia-southeast2-docker.pkg.dev/sit737-25t1-dona-3ac918c/text-toolkit:latest
+          # image: australia-southeast2-docker.pkg.dev/sit737-25t1-dona-3ac918c/text-toolkit:latest
+          image: kaushi11/text-toolkit:1
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PORT
+              value: "3041"
+            - name: MONGO_URI
+              # value: "mongodb://mongo:27017/text-toolkit"
+              value: "mongodb://admin:password@mongo:27017/text-toolkit?authSource=admin"
           ports:
             - containerPort: 3041
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      containers:
+        - name: mongo
+          image: mongo:6.0
+          ports:
+            - containerPort: 27017
+          args: ["--dbpath", "/data/db"]
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: "admin"
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              value: "password"
+          volumeMounts:
+            - mountPath: /data/db
+              name: mongo-volume
+          ports:
+            - containerPort: 27017
+      volumes:
+        - name: mongo-volume
+          persistentVolumeClaim:
+            claimName: mongo-pvc
+

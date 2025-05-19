@@ -10,6 +10,8 @@ This project explains the steps I took to build a simple web text toolkit using 
 - **Visual Studio Code**: Code editor. [Installation Instructions](https://code.visualstudio.com)
 - **Node.js**: JavaScript runtime. [Installation Instructions](https://nodejs.org)
 - **Express**: Web framework for Node.js.
+- **Docker**: Web app container creation.
+- **GCP**: Cloud Service Provider.
 
 ## 3. Setting Up the Git Repository
 1. Create a GitHub account at [GitHub](https://github.com).
@@ -25,8 +27,10 @@ This project explains the steps I took to build a simple web text toolkit using 
 7. Start the project run `node index.js` command.
 8. Aplication is listening on `3041` port. http://localhost:3041
 
-![alt text](<Screenshot 2025-05-06 at 3.06.27 pm.png>) 
-![alt text](<Screenshot 2025-05-06 at 3.05.12 pm.png>) 
-![alt text](<Screenshot 2025-05-06 at 3.06.02 pm.png>) 
-![alt text](<Screenshot 2025-05-06 at 3.06.09 pm.png>) 
-![alt text](<Screenshot 2025-05-06 at 3.06.21 pm.png>)
+![alt text](<Screenshot 2025-05-20 at 12.29.49 am.png>) 
+![alt text](<Screenshot 2025-05-20 at 12.29.55 am.png>) 
+![alt text](<Screenshot 2025-05-20 at 12.30.02 am.png>) 
+![alt text](<Screenshot 2025-05-20 at 12.30.08 am.png>) 
+![alt text](<Screenshot 2025-05-20 at 12.30.15 am.png>)
+![alt text](<Screenshot 2025-05-20 at 12.30.30 am.png>)
+![alt text](<Screenshot 2025-05-20 at 12.30.36 am.png>)
