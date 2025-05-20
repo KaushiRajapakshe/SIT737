@@ -41,7 +41,6 @@ jobs:
         
       - name: Deploy Kubernetes manifests
         run: |
-          kubectl apply -f k8s/createStorageClass.yml
           kubectl apply -f k8s/createPersistentVolumeClaim.yml
           kubectl apply -f k8s/deployment.yml
           kubectl apply -f k8s/service.yml

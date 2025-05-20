@@ -23,8 +23,6 @@ spec:
             - name: MONGO_URI
               # value: "mongodb://mongo:27017/text-toolkit"
               value: "mongodb://admin:password@mongo:27017/text-toolkit?authSource=admin"
-          ports:
-            - containerPort: 3041
 
 ---
 
