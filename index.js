@@ -50,11 +50,11 @@ app.use("/api", requireAuth, require("./routes/api"));
 // app.use("/api", requireLogin, require("./routes/api"));
 
 app.get("/", (req, res) => {
-  if (req.session.userId) {
-    res.sendFile(__dirname + "/public/home.html");
-  } else {
-    res.sendFile(__dirname + "/public/index.html");
-  }
+  res.sendFile(__dirname + "/public/index.html");
+});
+
+app.get("/home", (req, res) => {
+  res.sendFile(__dirname + "/public/home.html");
 });
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
