@@ -29,4 +29,4 @@ jobs:
 
     - name: Apply Kubernetes Job
       run: |
-        kubectl apply -f mongo-backup-job.yaml
+        kubectl apply -f mongoDump.yaml
