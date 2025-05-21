@@ -1,8 +1,10 @@
 name: Deploy to Google Cloud Run
 
 on:
-  workflow_dispatch:
-
+  push:
+    branches:
+      - sit737-2025-prac8hd 
+      
 jobs:
   deploy:
     name: Build and Deploy
