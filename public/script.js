@@ -21,9 +21,9 @@ document.addEventListener("DOMContentLoaded", function () {
         if (n.sec === "history") fetchHistory();
       };
     });
-    $("logout-btn").onclick = async () => {
-      await fetch("/auth/logout", { method: "POST" });
-      window.location.href = "/";
+    $("logout-btn").onclick = () => {
+      localStorage.removeItem("token"); // Remove JWT token
+      window.location.href = "/";     
     };
   }
 
@@ -60,6 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const data = await res.json();
 
         if (res.ok) {
+          localStorage.setItem("token", data.token); 
           // Login successful — redirect to home.html
           window.location.href = "home.html";
         } else {
@@ -83,7 +84,10 @@ document.addEventListener("DOMContentLoaded", function () {
           "Username or password too short.");
       let r = await fetch("/auth/register", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+         },
         body: JSON.stringify({ username: u, password: p }),
       });
       let d = await r.json();
@@ -97,7 +101,10 @@ window.processReverse = async function () {
   let text = $("reverseInput").value;
   let res = await fetch("/api/reverse", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { 
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+     },
     body: JSON.stringify({ text }),
   });
   let data = await res.json();
@@ -109,7 +116,10 @@ window.processDiff = async function () {
     text2 = $("diff2").value;
   let res = await fetch("/api/diff", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { 
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+     },
     body: JSON.stringify({ text1, text2 }),
   });
   let data = await res.json();
@@ -120,7 +130,10 @@ window.processCount = async function () {
   let text = $("countInput").value;
   let res = await fetch("/api/count", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { 
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+     },
     body: JSON.stringify({ text }),
   });
   let data = await res.json();
@@ -133,7 +146,10 @@ window.processConvert = async function () {
     type = $("caseType").value;
   let res = await fetch("/api/convert", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { 
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+     },
     body: JSON.stringify({ text, type }),
   });
   let data = await res.json();
@@ -162,3 +178,7 @@ window.fetchHistory = async function () {
   html += "</ul>";
   $("historyResult").innerHTML = html;
 };
+
+if (!localStorage.getItem("token")) {
+  window.location.href = "/";
+}

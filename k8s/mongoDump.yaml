@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mongo-backup-once
+spec:
+  template:
+    spec:
+      containers:
+        - name: backup
+          image: mongo:6.0
+          command:
+            - /bin/sh
+            - -c
+            - >
+              mongodump --uri=$(MONGO_URI) --out=/backup/$(date +%F_%H-%M-%S) &&
+              echo "Backup finished"
+          env:
+            - name: MONGO_URI
+              value: "mongodb://admin:password@mongo:27017/text-toolkit?authSource=admin"
+          volumeMounts:
+            - name: backup-volume
+              mountPath: /backup
+      restartPolicy: Never
+      volumes:
+        - name: backup-volume
+          persistentVolumeClaim:
+            claimName: mongo-pvc

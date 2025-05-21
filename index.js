@@ -33,17 +33,21 @@ app.use(
 app.use(express.json());
 app.use(express.static("public"));
 
-app.use("/auth", require("./routes/auth"));
+// app.use("/auth", require("./routes/auth"));
 
-function requireLogin(req, res, next) {
-  if (!req.session.userId) {
-    logger.error("Not authenticated");
-    return res.status(401).json({ error: "Not authenticated" });
-  }
-  next();
-}
+// session implementation
+// function requireLogin(req, res, next) {
+//   if (!req.session.userId) {
+//     logger.error("Not authenticated");
+//     return res.status(401).json({ error: "Not authenticated" });
+//   }
+//   next();
+// }
 
-app.use("/api", requireLogin, require("./routes/api"));
+const requireAuth = require("./middleware/auth");
+app.use("/api", requireAuth, require("./routes/api"));
+
+// app.use("/api", requireLogin, require("./routes/api"));
 
 app.get("/", (req, res) => {
   if (req.session.userId) {

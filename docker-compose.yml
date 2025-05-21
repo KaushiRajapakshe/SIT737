@@ -2,7 +2,8 @@ version: '3'
 services:
   app:
     build: .
-    image: kaushi11/texttoolkit:1
+    # image: kaushi11/texttoolkit:1
+    image: australia-southeast2-docker.pkg.dev/text-toolkit-460514/text-toolkit-repo/text-toolkit:1
     depends_on:
       - mongo
     ports:
@@ -12,6 +13,7 @@ services:
       - PORT=3041
       - MONGO_URI=mongodb://admin:password@mongo:27017/texttoolkit?authSource=admin
       - SESSION_SECRET=mySuperSecretSessionKey
+      - JWT_SECRET=your_super_secret_key
     restart: always
 
   mongo:

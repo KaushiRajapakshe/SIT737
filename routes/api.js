@@ -14,10 +14,10 @@ const upload = multer();
 const logger = require("../logger");
 
 const saveHistory = async (req, action, input, result) => {
-  if (!req.session.userId) return;
+  if (!req.user.id) return;
   try {
     await History.create({
-      user: req.session.userId,
+      user: req.user.id,
       action,
       input,
       result,
