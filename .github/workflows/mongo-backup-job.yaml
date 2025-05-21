@@ -25,6 +25,7 @@ jobs:
 
     - name: Get GKE credentials
       run: |
+        gcloud components install gke-gcloud-auth-plugin --quiet
         gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER_NAME }} --region ${{ secrets.GCP_REGION }}
 
     - name: Apply Kubernetes Job
