@@ -1,14 +1,3 @@
-async function fetchWithAuth(url, options) {
-  let res = await fetch(url, options);
-  if (res.status === 401) {
-    // Token invalid/expired, remove and force login
-    localStorage.removeItem("token");
-    window.location.href = "/";
-    return null;
-  }
-  return res.json();
-}
-
 function $(id) {
   return document.getElementById(id);
 }
@@ -32,10 +21,13 @@ document.addEventListener("DOMContentLoaded", function () {
         if (n.sec === "history") fetchHistory();
       };
     });
-    $("logout-btn").onclick = () => {
-      localStorage.removeItem("token"); // Remove JWT token
-      window.location.href = "/";     
-    };
+    $("logout-btn").onclick = async () => {
+      await fetch("/auth/logout", { method: "POST" });
+      window.location.href = "/";
+    // $("logout-btn").onclick = () => {
+    //   localStorage.removeItem("token"); // Remove JWT token
+    //   window.location.href = "/";     
+    // };
   }
 
   // Login/Register
@@ -71,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const data = await res.json();
 
         if (res.ok) {
-          localStorage.setItem("token", data.token); 
+          // localStorage.setItem("token", data.token); 
           // Login successful — redirect to home.html
           window.location.href = "home.html";
         } else {
@@ -95,9 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
           "Username or password too short.");
       let r = await fetch("/auth/register", {
         method: "POST",
-        headers: { 
-          "Content-Type": "application/json"
-         },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username: u, password: p }),
       });
       let d = await r.json();
@@ -109,12 +99,9 @@ document.addEventListener("DOMContentLoaded", function () {
 // Toolkit functions
 window.processReverse = async function () {
   let text = $("reverseInput").value;
-  let res = await fetchWithAuth("/api/reverse", {
+  let res = await fetch("/api/reverse", {
     method: "POST",
-    headers: { 
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-     },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ text }),
   });
   let data = await res.json();
@@ -124,12 +111,9 @@ window.processReverse = async function () {
 window.processDiff = async function () {
   let text1 = $("diff1").value,
     text2 = $("diff2").value;
-  let res = await fetchWithAuth("/api/diff", {
+  let res = await fetch("/api/diff", {
     method: "POST",
-    headers: { 
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-     },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ text1, text2 }),
   });
   let data = await res.json();
@@ -138,12 +122,9 @@ window.processDiff = async function () {
 
 window.processCount = async function () {
   let text = $("countInput").value;
-  let res = await fetchWithAuth("/api/count", {
+  let res = await fetch("/api/count", {
     method: "POST",
-    headers: { 
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-     },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ text }),
   });
   let data = await res.json();
@@ -154,12 +135,9 @@ window.processCount = async function () {
 window.processConvert = async function () {
   let text = $("convertInput").value,
     type = $("caseType").value;
-  let res = await fetchWithAuth("/api/convert", {
+  let res = await fetch("/api/convert", {
     method: "POST",
-    headers: { 
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-     },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ text, type }),
   });
   let data = await res.json();
@@ -180,10 +158,10 @@ window.fetchHistory = async function () {
   let h = await res.json();
   let html = "<ul>";
   h.forEach((item) => {
-    html += `<li>[${new Date(item.createdAt).toLocaleString()}] <b>${item.action
+    html += <li>[${new Date(item.createdAt).toLocaleString()}] <b>${item.action
       }</b>: <br/>Input: ${JSON.stringify(
         item.input
-      )}<br/>Result: ${JSON.stringify(item.result)}</li>`;
+      )}<br/>Result: ${JSON.stringify(item.result)}</li>;
   });
   html += "</ul>";
   $("historyResult").innerHTML = html;

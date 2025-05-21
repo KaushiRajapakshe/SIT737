@@ -1,6 +1,7 @@
 const express = require("express");
 const MongoStore = require("connect-mongo");
 const mongoose = require("mongoose");
+const session = require("express-session");
 require("dotenv").config();
 
 const app = express();
@@ -32,28 +33,28 @@ app.use(
 app.use(express.json());
 app.use(express.static("public"));
 
-// app.use("/auth", require("./routes/auth"));
+app.use("/auth", require("./routes/auth"));
 
 // session implementation
-// function requireLogin(req, res, next) {
-//   if (!req.session.userId) {
-//     logger.error("Not authenticated");
-//     return res.status(401).json({ error: "Not authenticated" });
-//   }
-//   next();
-// }
+function requireLogin(req, res, next) {
+  if (!req.session.userId) {
+    logger.error("Not authenticated");
+    return res.status(401).json({ error: "Not authenticated" });
+  }
+  next();
+}
 
-const requireAuth = require("./middleware/auth");
-app.use("/api", requireAuth, require("./routes/api"));
+// const requireAuth = require("./middleware/auth");
+// app.use("/api", requireAuth, require("./routes/api"));
 
-// app.use("/api", requireLogin, require("./routes/api"));
+app.use("/api", requireLogin, require("./routes/api"));
 
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/public/index.html");
-});
-
-app.get("/home", (req, res) => {
-  res.sendFile(__dirname + "/public/home.html");
+  if (req.session.userId) {
+    res.sendFile(__dirname + "/public/home.html");
+  } else {
+    res.sendFile(__dirname + "/public/index.html");
+  }
 });
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

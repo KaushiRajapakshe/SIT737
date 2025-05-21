@@ -14,10 +14,10 @@ const upload = multer();
 const logger = require("../logger");
 
 const saveHistory = async (req, action, input, result) => {
-  if (!req.user.id) return;
+  if (!req.session.userId) return;
   try {
     await History.create({
-      user: req.user.id,
+      user: rreq.session.userId,
       action,
       input,
       result,
@@ -70,7 +70,7 @@ router.post("/upload", upload.single("file"), async (req, res) => {
 
 // User history
 router.get("/history", async (req, res) => {
-  const items = await History.find({ user: req.user.id })
+  const items = await History.find({ user: req.session.userId })
     .sort({ createdAt: -1 })
     .limit(20)
     .lean();

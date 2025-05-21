@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require("../models/User");
 
 const logger = require("../logger");
-const { generateToken } = require("../utils/jwt");
+// const { generateToken } = require("../utils/jwt");
 
 // Register
 router.post("/register", async (req, res) => {
@@ -17,8 +17,11 @@ router.post("/register", async (req, res) => {
   try {
     const user = new User({ username, password });
     await user.save();
-    const token = generateToken(user);
-    res.json({ success: true, token });
+    req.session.userId = user._id;
+    res.json({ success: true });
+
+    // const token = generateToken(user);
+    // res.json({ success: true, token });
   } catch (err) {
     if (err.code === 11000) {
       logger.error("Username already taken");
@@ -42,10 +45,19 @@ router.post("/login", async (req, res) => {
     return res.status(400).json({ error: "Invalid username or password." });
   }
 
-  const token = generateToken(user);
-  res.json({ success: true, token });
+  // const token = generateToken(user);
+  // res.json({ success: true, token });
+  req.session.userId = user._id;
+  res.json({ success: true });
 });
 
-// No more logout/session needed for stateless JWT
+// Logout
+router.post("/logout", (req, res) => {
+  req.session.destroy(() => res.json({ success: true }));
+});
+
+router.get("/session", (req, res) => {
+  res.json({ loggedIn: !!req.session.userId });
+});
 
 module.exports = router;
