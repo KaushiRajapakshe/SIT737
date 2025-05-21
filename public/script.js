@@ -85,8 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
       let r = await fetch("/auth/register", {
         method: "POST",
         headers: { 
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json"
          },
         body: JSON.stringify({ username: u, password: p }),
       });
