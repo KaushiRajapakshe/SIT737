@@ -1,3 +1,14 @@
+async function fetchWithAuth(url, options) {
+  let res = await fetch(url, options);
+  if (res.status === 401) {
+    // Token invalid/expired, remove and force login
+    localStorage.removeItem("token");
+    window.location.href = "/";
+    return null;
+  }
+  return res.json();
+}
+
 function $(id) {
   return document.getElementById(id);
 }
@@ -98,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // Toolkit functions
 window.processReverse = async function () {
   let text = $("reverseInput").value;
-  let res = await fetch("/api/reverse", {
+  let res = await fetchWithAuth("/api/reverse", {
     method: "POST",
     headers: { 
       "Content-Type": "application/json",
@@ -113,7 +124,7 @@ window.processReverse = async function () {
 window.processDiff = async function () {
   let text1 = $("diff1").value,
     text2 = $("diff2").value;
-  let res = await fetch("/api/diff", {
+  let res = await fetchWithAuth("/api/diff", {
     method: "POST",
     headers: { 
       "Content-Type": "application/json",
@@ -127,7 +138,7 @@ window.processDiff = async function () {
 
 window.processCount = async function () {
   let text = $("countInput").value;
-  let res = await fetch("/api/count", {
+  let res = await fetchWithAuth("/api/count", {
     method: "POST",
     headers: { 
       "Content-Type": "application/json",
@@ -143,7 +154,7 @@ window.processCount = async function () {
 window.processConvert = async function () {
   let text = $("convertInput").value,
     type = $("caseType").value;
-  let res = await fetch("/api/convert", {
+  let res = await fetchWithAuth("/api/convert", {
     method: "POST",
     headers: { 
       "Content-Type": "application/json",
