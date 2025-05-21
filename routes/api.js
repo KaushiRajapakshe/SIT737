@@ -70,7 +70,7 @@ router.post("/upload", upload.single("file"), async (req, res) => {
 
 // User history
 router.get("/history", async (req, res) => {
-  const items = await History.find({ user: req.session.userId })
+  const items = await History.find({ user: req.user.id })
     .sort({ createdAt: -1 })
     .limit(20)
     .lean();
