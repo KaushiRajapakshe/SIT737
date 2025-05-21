@@ -178,7 +178,3 @@ window.fetchHistory = async function () {
   html += "</ul>";
   $("historyResult").innerHTML = html;
 };
-
-if (!localStorage.getItem("token")) {
-  window.location.href = "/";
-}
