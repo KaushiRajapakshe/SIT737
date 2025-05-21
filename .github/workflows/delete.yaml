@@ -1,9 +1,7 @@
 name: Delete Kubernetes Resources
 
 on:
-  push:
-    branches:
-      - sit737-2025-prac8hd 
+  workflow_dispatch:
 
 jobs:
   delete:
