@@ -24,10 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
     $("logout-btn").onclick = async () => {
       await fetch("/auth/logout", { method: "POST" });
       window.location.href = "/";
-    // $("logout-btn").onclick = () => {
-    //   localStorage.removeItem("token"); // Remove JWT token
-    //   window.location.href = "/";     
-    // };
+    };
   }
 
   // Login/Register
@@ -63,7 +60,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const data = await res.json();
 
         if (res.ok) {
-          // localStorage.setItem("token", data.token); 
           // Login successful — redirect to home.html
           window.location.href = "home.html";
         } else {
@@ -158,10 +154,10 @@ window.fetchHistory = async function () {
   let h = await res.json();
   let html = "<ul>";
   h.forEach((item) => {
-    html += <li>[${new Date(item.createdAt).toLocaleString()}] <b>${item.action
+    html += `<li>[${new Date(item.createdAt).toLocaleString()}] <b>${item.action
       }</b>: <br/>Input: ${JSON.stringify(
         item.input
-      )}<br/>Result: ${JSON.stringify(item.result)}</li>;
+      )}<br/>Result: ${JSON.stringify(item.result)}</li>`;
   });
   html += "</ul>";
   $("historyResult").innerHTML = html;

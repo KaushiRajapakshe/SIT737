@@ -1,7 +1,7 @@
 const express = require("express");
+const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const mongoose = require("mongoose");
-const session = require("express-session");
 require("dotenv").config();
 
 const app = express();
@@ -35,7 +35,6 @@ app.use(express.static("public"));
 
 app.use("/auth", require("./routes/auth"));
 
-// session implementation
 function requireLogin(req, res, next) {
   if (!req.session.userId) {
     logger.error("Not authenticated");
@@ -43,9 +42,6 @@ function requireLogin(req, res, next) {
   }
   next();
 }
-
-// const requireAuth = require("./middleware/auth");
-// app.use("/api", requireAuth, require("./routes/api"));
 
 app.use("/api", requireLogin, require("./routes/api"));
 

@@ -17,7 +17,7 @@ const saveHistory = async (req, action, input, result) => {
   if (!req.session.userId) return;
   try {
     await History.create({
-      user: rreq.session.userId,
+      user: req.session.userId,
       action,
       input,
       result,

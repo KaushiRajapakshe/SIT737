@@ -13,11 +13,6 @@
     </style>
   </head>
   <body>
-    <script>
-      if (!localStorage.getItem("token")) {
-        window.location.href = "/";
-      }
-    </script>
     <header>
       <h1>SIT737 Text Toolkit</h1>
       <nav class="nav">
@@ -34,14 +29,8 @@
       <!-- Reverse Section -->
       <section id="reverse" class="tool">
         <h2>Text Reverse</h2>
-        <textarea
-          id="reverseInput"
-          placeholder="Enter text to reverse..."
-        ></textarea>
-        <input
-          type="file"
-          onchange="loadFileToTextarea(this, 'reverseInput')"
-        />
+        <textarea id="reverseInput" placeholder="Enter text to reverse..."></textarea>
+        <input type="file" onchange="loadFileToTextarea(this, 'reverseInput')" />
         <p class="file-info">Supported file types: .txt, .md, .csv</p>
         <button onclick="processReverse()">Reverse</button>
         <button onclick="clearTextarea('reverseInput')">Clear</button>
@@ -68,10 +57,7 @@
       <!-- Count Section -->
       <section id="count" class="tool" style="display: none">
         <h2>Word & Character Count</h2>
-        <textarea
-          id="countInput"
-          placeholder="Enter text to count..."
-        ></textarea>
+        <textarea id="countInput" placeholder="Enter text to count..."></textarea>
         <input type="file" onchange="loadFileToTextarea(this, 'countInput')" />
         <p class="file-info">Supported file types: .txt, .md, .csv</p>
         <button onclick="processCount()">Count</button>
@@ -82,14 +68,8 @@
       <!-- Convert Section -->
       <section id="convert" class="tool" style="display: none">
         <h2>Case Converter</h2>
-        <textarea
-          id="convertInput"
-          placeholder="Enter text to convert..."
-        ></textarea>
-        <input
-          type="file"
-          onchange="loadFileToTextarea(this, 'convertInput')"
-        />
+        <textarea id="convertInput" placeholder="Enter text to convert..."></textarea>
+        <input type="file" onchange="loadFileToTextarea(this, 'convertInput')" />
         <p class="file-info">Supported file types: .txt, .md, .csv</p>
         <select id="caseType">
           <option value="upper">UPPERCASE</option>
